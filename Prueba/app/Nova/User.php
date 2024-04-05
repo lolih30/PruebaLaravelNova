@@ -63,7 +63,8 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
-                BelongsToMany::make('Services'),
+
+                BelongsToMany::make('Role', 'roles',  'App\Nova\Role')
 
         ];
     }
@@ -111,4 +112,6 @@ class User extends Resource
     {
         return [];
     }
+
+
 }

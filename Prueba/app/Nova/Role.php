@@ -2,26 +2,20 @@
 
 namespace App\Nova;
 
-
 use Laravel\Nova\Fields\ID;
+
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
+
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Service extends Resource
+class Role extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Service>
+     * @var class-string<\App\Models\Role>
      */
-    public static $model = \App\Models\Service::class;
+    public static $model = \App\Models\Role::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -36,7 +30,7 @@ class Service extends Resource
      * @var array
      */
     public static $search = [
-        'id','name'
+        'id',
     ];
 
     /**
@@ -49,15 +43,8 @@ class Service extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Servicio', 'name')
-            ->rules('required', 'max:100'),
-            Textarea::make('Descripción', 'description')->maxlength(250)
-            ->rules('required'),
-            Currency::make('Precio', 'price')->currency('USD')
-            ->rules('required'),
-             BelongsTo::make('Autor', 'author', 'App\Nova\User')
-            ->rules('required'),
-            BelongsToMany::make('Clientes', 'users', 'App\Nova\User'),
+            Text::make('Role', 'name')
+            ->rules('required', 'max:20'),
 
         ];
     }
@@ -105,14 +92,4 @@ class Service extends Resource
     {
         return [];
     }
-
-/*     public static function relatableUsers(NovaRequest $request, $query ,Field $field)
-    {
-        if($field instanceof BelongsToMany){
-
-            return $query->where('id', 2);
-        }else{
-            return $query->where('id', 1);
-        }
-    } */
 }
