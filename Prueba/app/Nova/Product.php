@@ -2,13 +2,14 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
+
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Product extends Resource
 {
@@ -47,11 +48,16 @@ class Product extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Nombre', 'name'),
-            Text::make('Precio', 'price'),
-            Image::make('Imagen', 'image'),
-            Text::make('Cantidad', 'amount'),
-            BelongsTo::make('User', 'user'),
+            Text::make('Producto', 'name')
+            ->rules('required', 'max:100'),
+            Currency::make('Precio', 'price')->currency('USD')
+            ->rules('required'),
+            Image::make('Imagen', 'image')
+            ->rules('required'),
+            Number::make('Existencias', 'amount')->min(1)->max(1000)->step(1)
+            ->rules('required'),
+             BelongsTo::make('User', 'author')
+            ->rules('required'),
         ];
     }
 

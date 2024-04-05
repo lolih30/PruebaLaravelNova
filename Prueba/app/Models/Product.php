@@ -13,7 +13,7 @@ class Product extends Model
         return $this->hasMany('App/User');
     } */
 
-    public function user()
+    public function author()
     {
         return $this->belongsTo(User::class);
     }

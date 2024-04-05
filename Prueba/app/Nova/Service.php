@@ -2,8 +2,14 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
+
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Service extends Resource
@@ -41,6 +47,15 @@ class Service extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('Servicio', 'name')
+            ->rules('required', 'max:100'),
+            Textarea::make('Descripción', 'description')->maxlength(250)
+            ->rules('required'),
+            Currency::make('Precio', 'price')->currency('USD')
+            ->rules('required'),
+             BelongsTo::make('User', 'author')
+            ->rules('required'),
+
         ];
     }
 
