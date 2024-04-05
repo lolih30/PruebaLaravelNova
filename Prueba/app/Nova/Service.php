@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Service extends Resource
@@ -26,7 +27,7 @@ class Service extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -34,7 +35,7 @@ class Service extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','name'
     ];
 
     /**
@@ -55,6 +56,8 @@ class Service extends Resource
             ->rules('required'),
              BelongsTo::make('User', 'author')
             ->rules('required'),
+
+            BelongsToMany::make('Clientes', 'users', 'App\Nova\User'),
 
         ];
     }

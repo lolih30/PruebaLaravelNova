@@ -11,6 +11,12 @@ class Service extends Model
 
     public function author()
     {
-       return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    //pertenece a muchos
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }
