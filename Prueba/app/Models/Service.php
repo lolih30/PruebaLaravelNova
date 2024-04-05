@@ -18,7 +18,7 @@ class Service extends Model
     //pertenece a muchos
     public function users()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class);
     }
 
 

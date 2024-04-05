@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-
+use App\Models\RoleUser;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Field;
@@ -36,7 +36,7 @@ class Service extends Resource
      * @var array
      */
     public static $search = [
-        'id','name'
+        'id', 'name'
     ];
 
     /**
@@ -50,13 +50,13 @@ class Service extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Servicio', 'name')
-            ->rules('required', 'max:100'),
+                ->rules('required', 'max:100'),
             Textarea::make('Descripción', 'description')->maxlength(250)
-            ->rules('required'),
+                ->rules('required'),
             Currency::make('Precio', 'price')->currency('USD')
-            ->rules('required'),
-             BelongsTo::make('Autor', 'author', 'App\Nova\User')
-            ->rules('required'),
+                ->rules('required'),
+            BelongsTo::make('Autor', 'author', 'App\Nova\User')
+                ->rules('required'),
             BelongsToMany::make('Clientes', 'users', 'App\Nova\User'),
 
         ];
@@ -106,13 +106,23 @@ class Service extends Resource
         return [];
     }
 
-/*     public static function relatableUsers(NovaRequest $request, $query ,Field $field)
+    //Es funcion se llama cuando obtenemos los datos de la relacion con la tabla user
+    public static function relatableUsers(NovaRequest $request, $query, Field $field)
     {
-        if($field instanceof BelongsToMany){
-
-            return $query->where('id', 2);
-        }else{
-            return $query->where('id', 1);
+        $roleCliente = 2;
+        $roleAdmin = 1;
+        $roleSeleccionado = 0;
+        //selecciona el rol que vamos a filtrar
+        if ($field instanceof BelongsToMany) {
+            $roleSeleccionado = $roleCliente;
+        } else {
+            $roleSeleccionado = $roleAdmin;
         }
-    } */
+        //filtra la tabla pibote por la coluna role_id usando el rol seleccionado
+        $roles = RoleUser::where('role_id', $roleSeleccionado)
+            ->pluck('user_id')
+            ->toArray();
+
+        return $query->whereIn('id', $roles);
+    }
 }
